@@ -12,6 +12,7 @@ class ButtonWidget :
 	std::shared_ptr<hgeSprite> sprite;		
 	HTEXTURE tex1;
 	HTEXTURE tex2;
+	bool bPressed;
 public:
 	ButtonWidget(int id, float x, float y, float w, float h, HTEXTURE tex1, HTEXTURE tex2, std::function<void(bool)> onClick=nullptr);
 	~ButtonWidget();

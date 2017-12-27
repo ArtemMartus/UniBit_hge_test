@@ -19,11 +19,15 @@ class WidgetContainer:
 		}
 	};
 	std::set<Widget*, classcomp> widgets;
+	bool bIsShown;
 public:
 	
 	WidgetContainer();
 	~WidgetContainer();
 	void Render();
+	void Show(bool bShow);
+	bool isShown();
+
 	void AddCtrl(Widget *ctrl);		/// Добавить можно только объект Widget, но не hgeGUIObject
 	void DelCtrl(int id);
 };

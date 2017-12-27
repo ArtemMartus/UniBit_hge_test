@@ -3,6 +3,7 @@
 
 WidgetContainer::WidgetContainer() :hgeGUI()
 {
+	bIsShown = true;
 }
 
 void WidgetContainer::Render()
@@ -14,6 +15,20 @@ void WidgetContainer::Render()
 		if (!pi->bVisible) /// Если элемент спрятан его не стоит рисовать
 			continue;
 		pi->Render();
+	}
+}
+
+bool WidgetContainer::isShown()
+{
+	return bIsShown;
+}
+
+void WidgetContainer::Show(bool bShow)
+{
+	bIsShown = bShow;
+	for (auto i = widgets.begin(); i != widgets.end(); ++i){
+		(*i)->bVisible = bIsShown;
+		(*i)->bEnabled = bIsShown;
 	}
 }
 
@@ -33,6 +48,5 @@ void WidgetContainer::DelCtrl(int id)
 
 WidgetContainer::~WidgetContainer()
 {
-
 }
 

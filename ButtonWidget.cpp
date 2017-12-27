@@ -22,9 +22,13 @@ ButtonWidget::ButtonWidget(int id, float x, float y, float w, float h, HTEXTURE 
 
 bool ButtonWidget::MouseLButton(bool bDown)
 {
-	if (event)			/// Вызываем обработчик, если он указан
-		event(bDown);
-	if (bDown)
+	if (bDown){
+		bPressed = !bPressed;
+		if (event)			/// Вызываем обработчик, если он указан
+			event(bPressed);
+	}
+
+	if (bPressed)
 		sprite->SetTexture(tex2);
 	else
 		sprite->SetTexture(tex1);
