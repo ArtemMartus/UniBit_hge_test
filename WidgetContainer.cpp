@@ -15,7 +15,6 @@ void WidgetContainer::Render()
 			continue;
 		pi->Render();
 	}
-	//hgeGUI::Render();		
 }
 
 void WidgetContainer::AddCtrl(Widget *widget)
@@ -31,11 +30,6 @@ void WidgetContainer::DelCtrl(int id)
 		widgets.erase(widget);
 	hgeGUI::DelCtrl(id);
 }
-
-/*int WidgetContainer::Update(float dt)
-{
-	return hgeGUI::Update(dt);
-}*/
 
 WidgetContainer::~WidgetContainer()
 {

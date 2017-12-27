@@ -16,9 +16,6 @@ public:
 	~ImageWidget();
 
 	void MouseOver(bool bOver);		/// Переопределяем только нужные ф-ции
-	//bool MouseLButton(bool bDown);
-	//void Update(float delta);
 	void Render();
-	//bool KeyClick(int key, int chr);
 };
 

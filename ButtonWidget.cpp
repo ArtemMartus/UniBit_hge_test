@@ -30,10 +30,6 @@ bool ButtonWidget::MouseLButton(bool bDown)
 		sprite->SetTexture(tex1);
 	return true;
 }
-/*void ButtonWidget::Update(float delta)
-{
-	hgeGUIObject::Update(delta);
-}*/
 
 void ButtonWidget::Render()
 {

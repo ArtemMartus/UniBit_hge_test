@@ -27,10 +27,6 @@ void ImageWidget::MouseOver(bool bOver)
 		event(bOver);
 }
 
-/*void ImageWidget::Update(float delta)
-{
-	hgeGUIObject::Update(delta);
-}*/
 
 void ImageWidget::Render()
 {

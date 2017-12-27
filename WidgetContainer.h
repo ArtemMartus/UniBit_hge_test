@@ -23,7 +23,6 @@ public:
 	
 	WidgetContainer();
 	~WidgetContainer();
-	//int Update(float dt);  
 	void Render();
 	void AddCtrl(Widget *ctrl);		/// Добавить можно только объект Widget, но не hgeGUIObject
 	void DelCtrl(int id);

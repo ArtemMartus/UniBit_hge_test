@@ -15,10 +15,7 @@ class ButtonWidget :
 public:
 	ButtonWidget(int id, float x, float y, float w, float h, HTEXTURE tex1, HTEXTURE tex2, std::function<void(bool)> onClick=nullptr);
 	~ButtonWidget();
-	//void MouseOver(bool bOver);
 	bool MouseLButton(bool bDown);		/// Переопределяем только нужные виртуальные ф-ции
-	//void Update(float delta);			
 	void Render();										
-	//bool KeyClick(int key, int chr);
 };
 
