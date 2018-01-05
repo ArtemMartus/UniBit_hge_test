@@ -1,11 +1,11 @@
 #include "header.h"
 
 
-static HGE* hge = 0;		/// статическая переменная доступная только из этого файла
-WidgetContainer* container;	/// экземпляр контейнера виджетов
+static HGE* hge = 0;		/// static variable, accessible only from this file
+WidgetContainer* container;	/// container objects as usual pointers
 WidgetContainer* container2;
 
-/// id разных кнопок для последующего доступа к ним через HGE API 
+/// id of different widgets for HGE API 
 const int button1_id = 227;
 const int button2_id = 228;
 const int image1_id = 229;
@@ -30,7 +30,7 @@ bool initialize()
 	container = new WidgetContainer();
 	container2 = new WidgetContainer();
 
-	/** создаем кнопку и присваиваем ей ее порядок в очереди на отрисовку**/
+	/** create widget, set the order and connect to container **/
 	auto a = new ButtonWidget(
 		button1_id, 100, 100, 200, 120, hge->Texture_Load("button_0.png"), hge->Texture_Load("button_1.png"),
 		[](bool bDown)
@@ -47,7 +47,7 @@ bool initialize()
 		image2_id, 160, 250, 200, 200, hge->Texture_Load("1.jpg"));
 
 
-	/** создаем кнопку и присваиваем ей ее порядок в очереди на отрисовку**/
+	/** even more widgets for another container **/
 	auto d = new ButtonWidget(
 		button2_id, 100, 300, 200, 120, hge->Texture_Load("button_2.png"), hge->Texture_Load("button_3.png"),
 		[](bool bDown){hge->System_Log("Button2 onClick event %d\n", bDown); });
@@ -68,10 +68,10 @@ bool initialize()
 	container2->AddCtrl(d);
 	container2->AddCtrl(e);
 
-	/// прячем вторую картинку
+	/// hide second picture
 	container->ShowCtrl(image2_id, false);
 
-	/// прячем второй контейнер
+	/// hide second container
 	container2->Show(false);
 
 	return ret;
@@ -84,7 +84,7 @@ void start()
 
 bool frameFunction()
 {
-	if (hge->Input_GetKeyState(HGEK_ESCAPE)) /// выходим из цикла отрисовки, если пользователь нажал Esc
+	if (hge->Input_GetKeyState(HGEK_ESCAPE)) /// exit if Escape pressed
 		return true;
 
 	float dt = hge->Timer_GetDelta();
@@ -97,17 +97,17 @@ bool frameFunction()
 
 bool renderFunction()
 {
-	hge->Gfx_Clear(0);		// очищаем буфер
-	hge->Gfx_BeginScene();	// начинаем рисовать
-	container2->Render();	// говорим контейнеру виджетов рисовать
+	hge->Gfx_Clear(0);		
+	hge->Gfx_BeginScene();	
+	container2->Render();	
 	container->Render();	
-	hge->Gfx_EndScene();	// конец отрисовки
+	hge->Gfx_EndScene();	
 	return false;
 }
 
 void release()
 {
-	delete container;
+	delete container;		
 	delete container2;
 	hge->System_Shutdown();
 	hge->Release();

@@ -2,7 +2,8 @@
 #include "ButtonWidget.h"
 #include "ImageWidget.h"
 #include "WidgetContainer.h"
-//объ€вление основных ф-ций
+
+/// main functions
 bool initialize();
 void start();
 bool frameFunction();

@@ -8,11 +8,11 @@ WidgetContainer::WidgetContainer() :hgeGUI()
 
 void WidgetContainer::Render()
 {
-	/// Рисуем все элементы коллекции по очереди. Так как они отсортированы по их позиции в очереди - получаем рендер согласно тз
+	/// Draw all elements in their order. As they sorted by their place in queue we get correct rendering
 	for (auto i = widgets.begin(); i != widgets.end(); ++i)
 	{
 		auto pi = *i;
-		if (!pi->bVisible) /// Если элемент спрятан его не стоит рисовать
+		if (!pi->bVisible) /// If element is hidden - don't show it
 			continue;
 		pi->Render();
 	}
@@ -40,7 +40,7 @@ void WidgetContainer::AddCtrl(Widget *widget)
 
 void WidgetContainer::DelCtrl(int id)
 {
-	Widget* widget = (Widget*)GetCtrl(id);	// На всякий случай проверим
+	Widget* widget = (Widget*)GetCtrl(id);
 	if (widget)
 		widgets.erase(widget);
 	hgeGUI::DelCtrl(id);

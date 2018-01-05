@@ -1,11 +1,11 @@
 #include "header.h"
 /************************************************************************/
-/* ¬с€ логика вынесена в файл header.cpp дл€ удобства                   */
+/* Whole logic moved to header.cpp					                    */
 /************************************************************************/
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
 {
-	initialize(); /// инизиализаци€, загрузка картинок, создание кнопок
-	start();	  /// вход в начало цикла отрисовки. ‘-ци€ блокирующа€
-	release();	  /// освобождение зан€тых ресурсов
+	initialize(); /// initialization, image loading, buttons creations
+	start();	  /// Enter render cycle
+	release();	 
 }

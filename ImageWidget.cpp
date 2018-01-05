@@ -23,7 +23,7 @@ ImageWidget::ImageWidget(int id, float x, float y, float w, float h, HTEXTURE te
 
 void ImageWidget::MouseOver(bool bOver)
 {
-	if (event)		/// Если есть обработчик - вызываем его
+	if (event)		/// if callback exists - call it
 		event(bOver);
 }
 

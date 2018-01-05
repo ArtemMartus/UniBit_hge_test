@@ -6,7 +6,7 @@ ButtonWidget::ButtonWidget(int id, float x, float y, float w, float h, HTEXTURE 
 	if (!tex1 || !tex2)
 	{
 		MessageBoxA(0, "Cannot load textures", "bu", MB_OK);
-		throw "very important problem";		/// Аналог _exit только с некоторой информацией о проблеме 
+		throw "very important problem";		/// exit with some information about the problem 
 	}
 	this->id = id;
 	this->bEnabled = true;
@@ -24,7 +24,7 @@ bool ButtonWidget::MouseLButton(bool bDown)
 {
 	if (bDown){
 		bPressed = !bPressed;
-		if (event)			/// Вызываем обработчик, если он указан
+		if (event)			/// Call callback if it exists
 			event(bPressed);
 	}
 
@@ -32,7 +32,7 @@ bool ButtonWidget::MouseLButton(bool bDown)
 		sprite->SetTexture(tex2);
 	else
 		sprite->SetTexture(tex1);
-	return true;
+	return true; 
 }
 
 void ButtonWidget::Render()

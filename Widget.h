@@ -6,14 +6,14 @@
 #include <hgegui.h>
 
 /************************************************************************/
-/* Простой интерфейс Widget					                            */
+/* Widget interface							                            */
 /************************************************************************/
 class Widget :
 	public hgeGUIObject
 {
 protected:
-	std::function<void(bool)> event;	/// Обработчик события
-	unsigned char order;				/// Место в очереди (0-ff)
+	std::function<void(bool)> event;	/// callback holder
+	unsigned char order;				/// place in render queue (0-ff)
 public:
 	virtual void Render()=0;		
 	Widget(std::function<void(bool)> event = nullptr);

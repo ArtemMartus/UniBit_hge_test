@@ -11,11 +11,11 @@
 class WidgetContainer:
 	public hgeGUI
 {
-	/** Внутренняя структура для сортировки коллекции виджетов**/
+	/** Inner structure for sorting elements **/
 	struct classcomp {
 		bool operator() (Widget* lhs, Widget* rhs) const
 		{
-			return lhs->getOrder() < rhs->getOrder();		/// сортируем виджеты по их порядку в очереди
+			return lhs->getOrder() < rhs->getOrder();		/// Sort widgets by their order in queue
 		}
 	};
 	std::set<Widget*, classcomp> widgets;
@@ -28,7 +28,7 @@ public:
 	void Show(bool bShow);
 	bool isShown();
 
-	void AddCtrl(Widget *ctrl);		/// Добавить можно только объект Widget, но не hgeGUIObject
+	void AddCtrl(Widget *ctrl);		/// We can add only Widget objects, but not the hgeGUIObject as in super class
 	void DelCtrl(int id);
 };
 

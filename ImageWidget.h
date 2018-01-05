@@ -15,7 +15,7 @@ public:
 	ImageWidget(int id, float x, float y, float w, float h, HTEXTURE tex1,std::function<void(bool)> mouseOver=nullptr);
 	~ImageWidget();
 
-	void MouseOver(bool bOver);		/// Переопределяем только нужные ф-ции
+	void MouseOver(bool bOver);		/// overriding function from interface
 	void Render();
 };
 
