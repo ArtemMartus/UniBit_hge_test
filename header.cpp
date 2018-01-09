@@ -34,12 +34,12 @@ ImageWidget* image2;
 
 
 /// id of different widgets for HGE API 
-const int button0_id = 227;
-const int button1_id = 228;
+#define button0_id  227
+#define button1_id  228
 
-const int image0_id = 229;
-const int image1_id = 230;
-const int image2_id = 231;
+#define image0_id  229
+#define image1_id  230
+#define image2_id  231
 
 bool Initialize()
 {
@@ -193,16 +193,3 @@ void Release()
 	hge->System_Shutdown();
 	hge->Release();
 }
-
-
-/*
-1. стиль
-1.1 minor. квалификаторы const то есть то нет
-2 widget
-2.1 SetOrder - всегда ли работает?
-2.2 minor. widget является hgeGUIObject хотя по-сути hgeGUIObject - это деталь реализации
-2.3 minor. установка всех обработчиков в конструкторе - несколько ограничивает варианты использования и усложняет добавление новых обработчиков
-3 widgetcontainer
-3.1 AddCtrl - что произойдет если добавить виджет в контейнер несколько раз? или добавить в разные коньейнеры?
-4.2 как выставить порядок отрисовки контейнеров если нужно расположить несколько контейнеров на экране. вариант со сквозным порядком для всех виджетов не слишком хорошо масштабируется требуется исправление
-*/
