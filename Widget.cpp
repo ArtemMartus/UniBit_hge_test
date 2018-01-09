@@ -1,20 +1,30 @@
 #include "Widget.h"
 
 
-Widget::Widget(std::function<void(bool)> _event ) :event(_event), hgeGUIObject()
+Widget::Widget(int ord ) : hgeGUIObject()
 {
-	order = 0;
+	order = ord;
+	connected = false;
 }
 
 Widget::~Widget()
 {
 }
 
-void Widget::setOrder(unsigned char ord)
+
+Widget::Widget(Widget& object) : hgeGUIObject()
 {
-	order = ord;
+	this->bEnabled = object.bEnabled;
+	this->bStatic = object.bStatic;
+	this->bVisible = object.bVisible;
+	this->order = object.order;
+	this->rect = object.rect;
+	this->id = object.id;
+	this->event = object.event;
+	this->connected = object.connected;
 }
-unsigned char Widget::getOrder()
+
+void Widget::SetEvent(std::function<void(bool)> fEvent)
 {
-	return order;
+	event = fEvent;
 }

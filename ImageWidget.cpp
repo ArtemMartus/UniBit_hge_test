@@ -2,7 +2,7 @@
 
 
 
-ImageWidget::ImageWidget(int id, float x, float y, float w, float h, HTEXTURE tex1, std::function<void(bool)> mouseOver) :Widget(mouseOver)
+ImageWidget::ImageWidget(int id, float x, float y, float w, float h, HTEXTURE tex1, std::function<void(bool)> mouseOver, int ord) :Widget(ord)
 {
 	if (!tex1)
 	{
@@ -16,6 +16,8 @@ ImageWidget::ImageWidget(int id, float x, float y, float w, float h, HTEXTURE te
 	this->bVisible = true;
 	this->rect.Set(x, y, x + w, y + h);
 	this->tex1 = tex1;
+
+	SetEvent(mouseOver);
 
 	sprite = std::make_shared<hgeSprite>(hgeSprite(tex1, 0.0, 0.0, (float)hge->Texture_GetWidth(tex1), (float)hge->Texture_GetHeight(tex1)));
 }
@@ -39,5 +41,4 @@ void ImageWidget::Render()
 
 ImageWidget::~ImageWidget()
 {
-	hge->Texture_Free(tex1);
 }

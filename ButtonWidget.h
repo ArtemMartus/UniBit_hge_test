@@ -14,9 +14,9 @@ class ButtonWidget :
 	HTEXTURE tex2;
 	bool bPressed;
 public:
-	ButtonWidget(int id, float x, float y, float w, float h, HTEXTURE tex1, HTEXTURE tex2, std::function<void(bool)> onClick=nullptr);
+	ButtonWidget(int id, float x, float y, float w, float h, HTEXTURE tex1, HTEXTURE tex2, std::function<void(bool)> onClick = nullptr, int order = 0);
 	~ButtonWidget();
 	bool MouseLButton(bool bDown);		/// overriding functions
-	void Render();										
+	void Render() override;										
 };
 

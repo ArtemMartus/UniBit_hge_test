@@ -1,7 +1,7 @@
 #include "ButtonWidget.h"
 
 
-ButtonWidget::ButtonWidget(int id, float x, float y, float w, float h, HTEXTURE tex1, HTEXTURE tex2, std::function<void(bool)> onClick) :Widget(onClick)
+ButtonWidget::ButtonWidget(int id, float x, float y, float w, float h, HTEXTURE tex1, HTEXTURE tex2, std::function<void(bool)> onClick, int ord) :Widget(ord)
 {
 	if (!tex1 || !tex2)
 	{
@@ -15,6 +15,10 @@ ButtonWidget::ButtonWidget(int id, float x, float y, float w, float h, HTEXTURE 
 	this->rect.Set(x, y, x + w, y + h);
 	this->tex1 = tex1;
 	this->tex2 = tex2;
+	this->bPressed = false;
+
+
+	SetEvent(onClick);
 
 	sprite = std::make_shared<hgeSprite>(hgeSprite(tex1, 0.0, 0.0, (float)hge->Texture_GetWidth(tex1), (float)hge->Texture_GetHeight(tex1)));
 }
@@ -46,6 +50,4 @@ void ButtonWidget::Render()
 
 ButtonWidget::~ButtonWidget()
 {
-	hge->Texture_Free(tex1);
-	hge->Texture_Free(tex2);
 }

@@ -6,19 +6,24 @@
 #include <hgegui.h>
 
 /************************************************************************/
-/* Widget interface							                            */
+/* Widget --interface--						                            */
 /************************************************************************/
 class Widget :
 	public hgeGUIObject
 {
 protected:
 	std::function<void(bool)> event;	/// callback holder
-	unsigned char order;				/// place in render queue (0-ff)
+
 public:
+	int order;							/// place in render queue 
+	bool connected;
+
 	virtual void Render()=0;		
-	Widget(std::function<void(bool)> event = nullptr);
+	Widget(int order=0);
 	~Widget();
-	void setOrder(unsigned char ord);
-	unsigned char getOrder();
+	Widget(Widget& object);
+	void SetOrder(int ord);
+	int GetOrder();
+	void SetEvent(std::function<void(bool)> fEvent);
 };
 

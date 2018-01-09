@@ -4,8 +4,8 @@
 #include "WidgetContainer.h"
 
 /// main functions
-bool initialize();
-void start();
-bool frameFunction();
-bool renderFunction();
-void release();
+bool Initialize();
+void Start();
+bool FrameFunction();
+bool RenderFunction();
+void Release();
