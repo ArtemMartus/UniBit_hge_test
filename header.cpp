@@ -4,17 +4,12 @@
 
 
 
-/**
-**		Use of smart pointers is overcomplicated because of HGE's user unfriendly copy constructor
-**/
+HGE* hge = 0;			
 
+std::shared_ptr<WidgetContainer> container1;	
+std::shared_ptr<WidgetContainer> container2;
 
-
-
-static HGE* hge = 0;			/// static variable, accessible only from this file
-
-WidgetContainer* container1;	/// container objects as usual pointers
-WidgetContainer* container2;
+std::vector<std::shared_ptr<WidgetContainer>> renderObjects;
 
 HTEXTURE tex_button0;
 HTEXTURE tex_button1;
@@ -25,15 +20,15 @@ HTEXTURE tex_image0;
 HTEXTURE tex_image1;
 HTEXTURE tex_image2;
 
-ButtonWidget* button0;
-ButtonWidget* button1;
+std::shared_ptr<ButtonWidget> button0;
+std::shared_ptr<ButtonWidget> button1;
 
-ImageWidget* image0;
-ImageWidget* image1;
-ImageWidget* image2;
+std::shared_ptr<ImageWidget> image0;
+std::shared_ptr<ImageWidget> image1;
+std::shared_ptr<ImageWidget> image2;
 
 
-/// id of different widgets for HGE API 
+/// id of different widgets 
 #define button0_id  227
 #define button1_id  228
 
@@ -65,55 +60,71 @@ bool Initialize()
 	tex_image1 = hge->Texture_Load("image_1.jpg");
 	tex_image2 = hge->Texture_Load("image_2.png");
 
-	container1 = new WidgetContainer();
-	container2 = new WidgetContainer();
+	container1 = std::make_shared < WidgetContainer>(1);
+	container2 = std::make_shared < WidgetContainer>();
 
-	auto button1_onClick = [](bool bDown){ MessageBoxA(0,"You've clicked a button!","Achivement unlocked",MB_OK); };
-	
 	/**									images **/
-	image0 = new ImageWidget(
-		image0_id, 340, 125, 200, 200, tex_image0,
-		[](bool bHover){
-			container1->ShowCtrl(image1_id, bHover);
-		},/*order*/ 3);
-	image1 = new ImageWidget(
-		image1_id, 160, 250, 200, 200, tex_image1, nullptr,/*order*/9);
-	image2 = new ImageWidget(
-		image2_id, 340, 325, 200, 200, tex_image2, nullptr, /*order*/ 1);
+	auto image0_onHover = [](bool bHover){
+		image1->m_visible= bHover;
+	};
+
+	image0 = std::make_shared<ImageWidget>();
+	image0->SetId(image0_id);
+	image0->m_x = 340;
+	image0->m_y = 125;
+	image0->m_height = 200;
+	image0->m_width = 200;
+	image0->SetTexture(tex_image0);
+	image0->onHover = image0_onHover;
+	image0->SetOrder(3);
+
+	image1 = std::make_shared<ImageWidget>(image1_id, 160, 250, 200, 200, tex_image1, nullptr, 4);
+
+	image2 = std::make_shared<ImageWidget>(image2_id, 340, 325, 200, 200, tex_image2, nullptr, 1);
+
 
 
 	/**									buttons **/
 
-	button0 = new ButtonWidget(
-		button0_id, 100, 100, 200, 120, tex_button0, tex_button1,
-		[](bool bDown){container2->Show(!container2->bIsShown);});
-	button1 = new ButtonWidget(
-		button1_id, 100, 300, 200, 120, tex_button2, tex_button3);
-	button1->SetEvent(button1_onClick);
-	
+	button0 = std::make_shared<ButtonWidget>(button0_id, 100, 100, 200, 120, tex_button3, tex_button2,
+		[](bool bDown){container2->Show(bDown); });
+	button0->SetTextureOff(tex_button0);
+	button0->SetTextureOn(tex_button1);
+
+	button1 = std::make_shared<ButtonWidget>(button1_id, 100, 300, 200, 120, tex_button2, tex_button3);
+
+	auto button1_onClick = [&](bool){ 
+		auto old = container1->GetCtrl(image0_id)->GetOrder();
+		container1->UpdateOrder(image0_id, old + 1);
+	};
+
+	button1->onClick = button1_onClick;
 
 
-	container1->AddCtrl(button0);
-	container1->AddCtrl(image0);
-	container1->AddCtrl(image1);
-	container1->AddCtrl(image1);	// second time, whoops
 
-	container2->AddCtrl(image1);	// try asigning widget to another container
-	container2->AddCtrl(button1);
-	container2->AddCtrl(image2);
+
+
+	container1->AddCtrl(static_cast<std::shared_ptr<Widget>>(button0));
+	container1->AddCtrl(static_cast<std::shared_ptr<Widget>>(image0));
+	container1->AddCtrl(static_cast<std::shared_ptr<Widget>>(image1));
+	container1->AddCtrl(static_cast<std::shared_ptr<Widget>>(image1));	// second time, whoops
+
+	container2->AddCtrl(static_cast<std::shared_ptr<Widget>>(image1));	// try asigning widget to another container
+	container2->AddCtrl(static_cast<std::shared_ptr<Widget>>(button1));
+	container2->AddCtrl(static_cast<std::shared_ptr<Widget>>(image2));
 
 	/// hide second picture
-	container1->ShowCtrl(image1_id, false);
+	image1->m_visible = false;
 
 	/// hide second container
 	container2->Show(false);
 
-	delete button0;
-	delete button1;
+	renderObjects.push_back(container1);
+	renderObjects.push_back(container2);
 
-	delete image0;
-	delete image1;
-	delete image2;
+	std::sort(renderObjects.begin(), renderObjects.end(), [](const std::shared_ptr<WidgetContainer>&a, const std::shared_ptr<WidgetContainer>&b){
+		return a->GetOrder() < b->GetOrder();
+	});
 
 	return ret;
 }
@@ -130,10 +141,8 @@ bool FrameFunction()
 	if (hge->Input_GetKeyState(HGEK_ESCAPE)) /// exit if Escape pressed
 		return true;
 
-	float dt = hge->Timer_GetDelta();
-
-	container2->Update(dt);
-	container1->Update(dt);
+	container2->Update();
+	container1->Update();
 	
 	return false;
 }
@@ -141,34 +150,13 @@ bool FrameFunction()
 
 bool RenderFunction()
 {
+	hge->Gfx_BeginScene();
 	hge->Gfx_Clear(0);		
-	hge->Gfx_BeginScene();	
-	/* init render objects queue by order */
-	std::vector<Widget*> renderObjects;
-	
-	// widget1
-	{
-		auto widgets = container1->GetWidgets();	// retrieve list of objs from container1 iterator
-		for (auto b = widgets.begin(); b != widgets.end(); ++b)
-			renderObjects.push_back(*b);
-	}
-
-	// widget2
-	{
-		auto widgets = container2->GetWidgets();	// retrieve list of objs from container2 iterator
-		for (auto b = widgets.begin(); b != widgets.end(); ++b)
-			renderObjects.push_back(*b);
-	}
-
-	std::sort(renderObjects.begin(), renderObjects.end(), [](Widget*a, Widget*b){
-		return a->order < b->order; 
-	});
 
 	/* render objects*/
 	for (auto a = renderObjects.begin(); a != renderObjects.end(); ++a){
 		auto obj = *a;
-		if (obj->bVisible)
-			obj->Render();
+		obj->Render();
 	}
 
 	hge->Gfx_EndScene();	
@@ -178,9 +166,6 @@ bool RenderFunction()
 
 void Release()
 {
-	delete container2;
-	delete container1;	
-
 	hge->Texture_Free(tex_button0);
 	hge->Texture_Free(tex_button1);
 	hge->Texture_Free(tex_button2);

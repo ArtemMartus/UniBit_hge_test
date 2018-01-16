@@ -9,13 +9,13 @@
 class ImageWidget :
 	public Widget
 {
-	std::shared_ptr<hgeSprite> sprite;
-	HTEXTURE tex1;
+
 public:
-	ImageWidget(int id, float x, float y, float w, float h, HTEXTURE tex1, std::function<void(bool)> mouseOver = nullptr, int order = 0);
+	ImageWidget(int id=0, float x=0.0f, float y=0.0f, float w=0.0f, float h=0.0f, HTEXTURE tex1=0, std::function<void(bool)> mouseOver = nullptr, int order = 0);
 	~ImageWidget();
 
-	void MouseOver(bool bOver);		/// overriding function from interface
-	void Render() override;
+	void Render(HGE* hge) override;
+	void SetTexture(HTEXTURE tex1);
+	void OnHover(bool bOver) override;
 };
 

@@ -1,30 +1,41 @@
 #include "Widget.h"
 
 
-Widget::Widget(int ord ) : hgeGUIObject()
+Widget::Widget(int id, float x, float y, float width, float height,int ord)
 {
-	order = ord;
-	connected = false;
+	m_visible = true;
+	SetOrder(ord);
+	this->id = id;
+	m_x = x;
+	m_y = y;
+	m_height = height;
+	m_width = width;
 }
 
 Widget::~Widget()
 {
 }
 
-
-Widget::Widget(Widget& object) : hgeGUIObject()
+Widget* Widget::GetWidget(int x, int y)
 {
-	this->bEnabled = object.bEnabled;
-	this->bStatic = object.bStatic;
-	this->bVisible = object.bVisible;
-	this->order = object.order;
-	this->rect = object.rect;
-	this->id = object.id;
-	this->event = object.event;
-	this->connected = object.connected;
+	if (x < m_x || x > m_width+m_x)
+		return nullptr;
+	if (y < m_y || y > m_height+m_y)
+		return nullptr;
+	return this;
 }
 
-void Widget::SetEvent(std::function<void(bool)> fEvent)
+void Widget::Render(HGE* hge)
 {
-	event = fEvent;
+
+}
+
+void Widget::OnClick()
+{
+
+}
+
+void Widget::OnHover(bool)
+{
+
 }

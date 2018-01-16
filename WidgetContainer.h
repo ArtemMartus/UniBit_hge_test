@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-//#include <set>
+#include <vector>
 #include <list>
 #include <memory>
 #include <algorithm>
@@ -10,21 +10,23 @@
 #include "Widget.h"
 
 
-class WidgetContainer:
-	public hgeGUI
+class WidgetContainer
 {
-	std::list<Widget*> widgets;
 
+	std::vector < std::shared_ptr<Widget> > widgets;
+	HGE* hge;
+	int order;
 public:
 	bool bIsShown;
-
-	WidgetContainer();
+	WidgetContainer(int order=0);
 	~WidgetContainer();
 	void Show(bool bShow);
-
-	std::list<Widget*>& GetWidgets();
-	template<class T>
-	void AddCtrl(T* obj);	
+	void Update();
+	void Render();
+	void AddCtrl(std::shared_ptr<Widget>& obj);	
 	void DelCtrl(int id);
+	void UpdateOrder(int id, int newOrder);
+	int GetOrder(){ return order; };
+	std::shared_ptr<Widget>& GetCtrl(int id);
 };
 
